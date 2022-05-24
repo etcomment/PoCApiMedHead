@@ -22,6 +22,11 @@ public class HospitalController {
     public Iterable<Hospital> getHospital(){
         return hospitalService.getAllHospital();
     }
+    
+    @GetMapping("/hospital/free")
+    public Iterable<Hospital> getAllFreeHospital(){
+        return hospitalService.getAllFreeHospital();
+    }
 
     /**
      * Read - Get hospitals by Id

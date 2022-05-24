@@ -33,4 +33,6 @@ public class Hospital {
 
     private String address;
     
+    private Integer freebed;
+    
 }

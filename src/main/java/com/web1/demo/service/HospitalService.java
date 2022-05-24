@@ -9,6 +9,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.web1.demo.repository.HospitalRepository;
+import java.util.ArrayList;
 
 import java.util.Optional;
 
@@ -43,5 +44,14 @@ public class HospitalService {
     public Hospital saveHospital(Hospital hopital){
         Hospital savedHospital = hospitalRepository.save(hopital);
         return savedHospital;
+    }
+    
+    public Iterable<Hospital> getAllFreeHospital(){
+        ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        for (Hospital hopital : hospitalRepository.findAll())
+            if (hopital.getFreebed()>0){
+                myHospitalList.add(hopital);
+            }
+        return myHospitalList;
     }
 }
