@@ -32,9 +32,6 @@ public class HospitalService {
         return hospitalRepository.findAll();
     }
 
-    /*public Iterable<Hospital> getAllHospitalInRange(final Integer distance, final Double longiSource, final Double latiSource) {
-        return  hospitalRepository.findAllByRange(distance, longiSource, latiSource);
-    }*/
     public String getHospitalName(final Integer id) {
         return hospitalRepository.findById(id).get().getName();
     }
@@ -78,4 +75,18 @@ public class HospitalService {
         }
         return myHospitalList;
     }
+    
+    public Iterable<Hospital> getAllHospitalInRange(float latCentre, float longCentre, int distance){
+        ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        for (Hospital hopital : getAllFreeHospital()) {
+            if (GisOperations.distFrom(latCentre, longCentre, hopital.getLatitude(), hopital.getLongitude()) < distance) {
+                myHospitalList.add(hopital);
+            }
+        }
+        return myHospitalList;
+    }
+    
+    
+    
+    
 }
