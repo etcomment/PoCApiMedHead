@@ -23,6 +23,10 @@ public class HospitalController {
         return hospitalService.getAllHospital();
     }
     
+    /**
+     * Read - Get all free hospitals
+     * @return - An Iterable object of all Hospital with free beds,  full filled
+     */
     @GetMapping("/hospital/free")
     public Iterable<Hospital> getAllFreeHospital(){
         return hospitalService.getAllFreeHospital();
@@ -30,6 +34,7 @@ public class HospitalController {
 
     /**
      * Read - Get hospitals by Id
+     * @param id
      * @return - An object of Hospital full filled with given Id
      */
     @GetMapping("/hospital/{id}")
@@ -52,6 +57,16 @@ public class HospitalController {
     public Iterable<Hospital> getHospitalInRange(@PathVariable("range") final Integer range){
         return hospitalService.getAllHospitalInRange(range, 52.0333256, -1.2256890);
     }*/
+    
+    
+    /**
+     * Read - Get hospitals by Specialities
+     * @return - An object of Hospital full filled with given speciality
+     */
+    @GetMapping("/hospital/speciality/{spec}")
+    public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality){
+        return hospitalService.getAllBySpec(speciality);
+    }
 
 
 }

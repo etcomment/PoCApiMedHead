@@ -20,38 +20,62 @@ import java.util.Optional;
 @Data
 @Service
 public class HospitalService {
+
     @Autowired
     private HospitalRepository hospitalRepository;
 
-    public Optional<Hospital> getHospital(final Integer id){
+    public Optional<Hospital> getHospital(final Integer id) {
         return hospitalRepository.findById(id);
     }
 
-    public Iterable<Hospital> getAllHospital(){
+    public Iterable<Hospital> getAllHospital() {
         return hospitalRepository.findAll();
     }
 
     /*public Iterable<Hospital> getAllHospitalInRange(final Integer distance, final Double longiSource, final Double latiSource) {
         return  hospitalRepository.findAllByRange(distance, longiSource, latiSource);
     }*/
+    public String getHospitalName(final Integer id) {
+        return hospitalRepository.findById(id).get().getName();
+    }
 
-    public String getHospitalName(final Integer id) { return hospitalRepository.findById(id).get().getName();}
-
-    public void deleteHospital(final Integer id){
+    public void deleteHospital(final Integer id) {
         hospitalRepository.deleteById(id);
     }
 
-    public Hospital saveHospital(Hospital hopital){
+    public Hospital saveHospital(Hospital hopital) {
         Hospital savedHospital = hospitalRepository.save(hopital);
         return savedHospital;
     }
-    
-    public Iterable<Hospital> getAllFreeHospital(){
+
+    public Iterable<Hospital> getAllFreeHospital() {
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
-        for (Hospital hopital : hospitalRepository.findAll())
-            if (hopital.getFreebed()>0){
+        for (Hospital hopital : hospitalRepository.findAll()) {
+            if (hopital.getFreebed() > 0) {
                 myHospitalList.add(hopital);
             }
+        }
+        return myHospitalList;
+    }
+    
+    public Iterable<Hospital> getAllAroundCoord(float longitude, float latitude){
+        ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        for (Hospital hopital : hospitalRepository.findAll()) {
+            if (hopital.getLatitude()> longitude && hopital.getLatitude()>latitude) {
+                myHospitalList.add(hopital);
+                //TODO : Trouver algo pour savoir si une coordonnée se trouve dans une zone
+            }
+        }
+        return myHospitalList;
+    }
+    
+    public Iterable<Hospital> getAllBySpec(String speciality){
+        ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        for (Hospital hopital : hospitalRepository.findAll()) {
+            if (hopital.getSpecialities().contains(speciality)) {
+                myHospitalList.add(hopital);
+            }
+        }
         return myHospitalList;
     }
 }
