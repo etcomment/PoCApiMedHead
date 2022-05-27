@@ -11,7 +11,7 @@ package com.web1.demo.service;
 public class GisOperations {
     
     public static double distFrom(double latAmbulance, double longAmbulance, double latHopital, double longHopital) {
-        double earthRadius = 6371.0; // miles (or 6371.0 kilometers)
+        double earthRadius = 6371.0; // 3958.75 miles (ou 6371.0 kilometers)
         double dLat = Math.toRadians(latHopital-latAmbulance);
         double dLng = Math.toRadians(longHopital-longAmbulance);
         double sindLat = Math.sin(dLat / 2);

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *
  * @author stiven
  */
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class NoHospitalFound extends Exception{
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class NoHospitalFound extends RuntimeException{
     public NoHospitalFound(String message) {
       super(message);
   }

@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
+/**
+ *
+ * @author stiven
+ */
 @RestController
 public class HospitalController {
     @Autowired
@@ -77,7 +80,7 @@ public class HospitalController {
             return Optional.of(hospital.get());
         }
         else {
-            throw new NoHospitalFound("No hospital found in database with this ID");
+            throw new NoHospitalFound("No hospital found in database with ID "+id);
         }
     }
     
@@ -101,15 +104,15 @@ public class HospitalController {
      */
     @GetMapping("/hospital/speciality/{spec}")
     public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
-        ArrayList<Hospital> toto = (ArrayList<Hospital>) hospitalService.getAllBySpec(speciality);
-        if (!toto.isEmpty()){
+        ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.getAllBySpec(speciality);
+        if (!myHospitalList.isEmpty()){
             return hospitalService.getAllBySpec(speciality);
         } else {
             throw new NoHospitalFound("No hospital found in database with this speciality");
         }
     }
     
-        /**
+     /**
      * Read - Get hospitals by range
      * @param latInit
      * @param longInit

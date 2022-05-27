@@ -47,6 +47,7 @@ public class HospitalService {
 
     public Iterable<Hospital> getAllFreeHospital() {
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        //déporter le prétraitement sur le repository 
         for (Hospital hopital : hospitalRepository.findAll()) {
             if (hopital.getFreebed() > 0) {
                 myHospitalList.add(hopital);
@@ -55,21 +56,12 @@ public class HospitalService {
         return myHospitalList;
     }
     
-    public Iterable<Hospital> getAllAroundCoord(float longitude, float latitude){
-        ArrayList<Hospital> myHospitalList = new ArrayList<>();
-        for (Hospital hopital : hospitalRepository.findAll()) {
-            if (hopital.getLatitude()> longitude && hopital.getLatitude()>latitude) {
-                myHospitalList.add(hopital);
-                //TODO : Trouver algo pour savoir si une coordonnée se trouve dans une zone
-            }
-        }
-        return myHospitalList;
-    }
     
     public Iterable<Hospital> getAllBySpec(String speciality){
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        //déporter le prétraitement sur le repository 
         for (Hospital hopital : hospitalRepository.findAll()) {
-            if (hopital.getSpecialities().contains(speciality)) {
+            if (hopital.getSpecialities().toLowerCase().contains(speciality)) {
                 myHospitalList.add(hopital);
             }
         }
