@@ -14,6 +14,6 @@ import com.web1.demo.model.Hospital;
  */
 @Repository
 public interface HospitalRepository extends CrudRepository<Hospital, Integer>, HospitalRepositoryCustom{
-
+    //todo findByFreebed
 
 }
