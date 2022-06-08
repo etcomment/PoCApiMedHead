@@ -4,6 +4,9 @@
  */
 package com.web1.demo.service;
 
+import com.web1.demo.model.Hospital;
+import java.util.ArrayList;
+
 /**
  *
  * @author stiven
@@ -20,8 +23,15 @@ public class GisOperations {
                 * Math.cos(Math.toRadians(latAmbulance)) * Math.cos(Math.toRadians(latHopital));
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double dist = earthRadius * c;
-
         return dist;
+    }
+    
+    
+    public static Iterable<Hospital> getHospitalsOSRM(double distance, String specialitiy) {
+        ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        
+        
+        return myHospitalList;    
     }
     
 }

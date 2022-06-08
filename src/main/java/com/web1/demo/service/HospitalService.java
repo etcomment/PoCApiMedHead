@@ -79,6 +79,23 @@ public class HospitalService {
     }
     
     
+    public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(float latCentre, float longCentre, int distance, String speciality){
+        ArrayList<Hospital> myHospitalList = new ArrayList<>();
+        ArrayList<Hospital> myHospitalFreeList = new ArrayList<>();
+        for (Hospital hopital : getAllBySpec(speciality)) {
+            if (hopital.getFreebed() > 0) {
+                myHospitalFreeList.add(hopital);
+            }
+        }
+        for (Hospital hopital : myHospitalFreeList){
+            if (GisOperations.distFrom(latCentre, longCentre, hopital.getLatitude(), hopital.getLongitude()) < distance) {
+                myHospitalList.add(hopital);
+            }
+        }      
+        
+        return myHospitalList;
+    }
+    
     
     
 }

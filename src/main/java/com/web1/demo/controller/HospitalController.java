@@ -2,6 +2,7 @@ package com.web1.demo.controller;
 
 
 import com.web1.demo.exeptions.NoHospitalFound;
+import com.web1.demo.exeptions.NoParametersEntered;
 import com.web1.demo.exeptions.NotYetImplemented;
 import com.web1.demo.model.Hospital;
 import com.web1.demo.service.HospitalService;
@@ -33,12 +34,7 @@ public class HospitalController {
     public void handleAppInfoRequest() throws NotYetImplemented {
         throw new NotYetImplemented("La requete n'est pas encore implementée");
     }
-    
-    @RequestMapping("/hospital/speciality")
-    public void noSpecEntered() throws NotYetImplemented {
-        throw new NotYetImplemented("La requete n'est pas encore implementée");
-    }
-    
+      
     /**
      * Read - Get all hospitals
      * @return - An Iterable object of Hospital full filled
@@ -52,6 +48,15 @@ public class HospitalController {
             throw new NoHospitalFound("No hospital found in database");
         }
         
+    }
+    
+    /**
+     * Read - Get all hospital
+     * @throws com.web1.demo.exeptions.NoParametersEntered
+     */
+    @RequestMapping("/hospital/speciality")
+    public void noSpecEntered() throws NoParametersEntered {
+        throw new NoParametersEntered("Warning, missing the speciality");
     }
     
     /**
@@ -110,6 +115,16 @@ public class HospitalController {
             return hospitalService.getAllBySpec(speciality);
         } else {
             throw new NoHospitalFound("No hospital found in database with this speciality");
+        }
+    }
+    
+    @GetMapping("/hospital/free/speciality/{spec}/range/{latInit}/{longInit}/{distance}")
+    public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ) throws NoHospitalFound {
+        ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.getAllFreeHospitalInRangeWithSpeciality(latInit, longInit, distance, speciality);
+        if (!myHospitalList.isEmpty()){
+            return myHospitalList;
+        } else {
+            throw new NoHospitalFound("No hospital found in database with this speciality at this range");
         }
     }
     
