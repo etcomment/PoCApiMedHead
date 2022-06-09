@@ -6,7 +6,6 @@ package com.web1.demo.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 /**
  *
  * @author stiven

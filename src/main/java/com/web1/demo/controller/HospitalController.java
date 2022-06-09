@@ -5,8 +5,12 @@ import com.web1.demo.exeptions.NoHospitalFound;
 import com.web1.demo.exeptions.NoParametersEntered;
 import com.web1.demo.exeptions.NotYetImplemented;
 import com.web1.demo.model.Hospital;
+import com.web1.demo.model.Itineraire;
+import com.web1.demo.service.GisOperations;
 import com.web1.demo.service.HospitalService;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HospitalController {
     @Autowired
     private HospitalService hospitalService;
+    @Autowired
+    private GisOperations gisOperation;
 
     @RequestMapping("/")
     public void handleRequest() {
@@ -118,7 +124,7 @@ public class HospitalController {
         }
     }
     
-    @GetMapping("/hospital/free/speciality/{spec}/range/{latInit}/{longInit}/{distance}")
+    @GetMapping("/hospital/free/speciality/{spec}/range/{longInit}/{latInit}/{distance}")
     public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ) throws NoHospitalFound {
         ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.getAllFreeHospitalInRangeWithSpeciality(latInit, longInit, distance, speciality);
         if (!myHospitalList.isEmpty()){
@@ -136,10 +142,10 @@ public class HospitalController {
      * @return - An object of Hospital full filled with given speciality
      * @throws com.web1.demo.exeptions.NoHospitalFound
      */
-    @GetMapping("/hospital/range/{latInit}/{longInit}/{distance}")
-    public Iterable<Hospital> getAllHospitalInRange(@PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ) throws NoHospitalFound{
+    @GetMapping("/hospital/range/{longInit}/{latInit}/{distance}")
+    public Iterable<Hospital> getAllHospitalInRange(@PathVariable("longInit") final float longInit, @PathVariable("latInit") final float latInit, @PathVariable("distance") final int distance ) throws NoHospitalFound{
         ArrayList<Hospital> hospitalInRange;
-        hospitalInRange = (ArrayList<Hospital>) hospitalService.getAllHospitalInRange(latInit, longInit, distance);
+        hospitalInRange = (ArrayList<Hospital>) hospitalService.getAllHospitalInRange(longInit, latInit, distance);
         if (!hospitalInRange.isEmpty()){
             return hospitalInRange;
         } else {
@@ -147,6 +153,28 @@ public class HospitalController {
         }
     }
 
+    /**
+     *
+     * @param speciality
+     * @param latInit
+     * @param longInit
+     * @param distance
+     * @return
+     * @throws NoHospitalFound
+     */
+    @GetMapping("/nearest/{longInit}/{latInit}/{distance}/{spec}")
+    public Iterable<Itineraire> getNearest(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ){
+        ArrayList<Itineraire> hospitalNearest = (ArrayList<Itineraire>) hospitalService.getNearest(latInit, longInit, distance, speciality);
+        
+        if (!hospitalNearest.isEmpty()){
+            Collections.sort(hospitalNearest, Itineraire.sortByDistance);
+            return hospitalNearest;
+        } else {
+            throw new NoHospitalFound("No hospital found in database in this range");
+        }
+        
+        
+    }
 
 }
 

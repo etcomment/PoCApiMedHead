@@ -7,6 +7,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 
 /**
@@ -14,8 +17,10 @@ import lombok.Data;
  * @author stiven
  */
 @Configuration
-@ConfigurationProperties(prefix = "com.etcomment.web2")
-@Data
 public class customProperty {
-    private String webApi;
+    //private String webApi;
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder){
+        return builder.build();
+    }
 }

@@ -5,6 +5,7 @@
 package com.web1.demo.service;
 
 import com.web1.demo.model.Hospital;
+import com.web1.demo.model.Itineraire;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,18 +69,18 @@ public class HospitalService {
         return myHospitalList;
     }
     
-    public Iterable<Hospital> getAllHospitalInRange(float latCentre, float longCentre, int distance){
+    public Iterable<Hospital> getAllHospitalInRange(float longCentre, float latCentre, int distance){
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
         for (Hospital hopital : getAllFreeHospital()) {
-            if (GisOperations.distFrom(latCentre, longCentre, hopital.getLatitude(), hopital.getLongitude()) < distance) {
+            if (GisOperations.distFrom(longCentre, latCentre, hopital.getLongitude(), hopital.getLatitude()) < distance) {
                 myHospitalList.add(hopital);
             }
         }
         return myHospitalList;
     }
     
-    
-    public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(float latCentre, float longCentre, int distance, String speciality){
+    //useless? Ou du moins c'est le bordel. A envoyer vers la classe gisOperation 
+    public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(float longCentre, float latCentre, int distance, String speciality){
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
         ArrayList<Hospital> myHospitalFreeList = new ArrayList<>();
         for (Hospital hopital : getAllBySpec(speciality)) {
@@ -88,14 +89,19 @@ public class HospitalService {
             }
         }
         for (Hospital hopital : myHospitalFreeList){
-            if (GisOperations.distFrom(latCentre, longCentre, hopital.getLatitude(), hopital.getLongitude()) < distance) {
+            if (GisOperations.distFrom(longCentre, latCentre, hopital.getLatitude(), hopital.getLongitude()) < distance) {
                 myHospitalList.add(hopital);
             }
         }      
-        
         return myHospitalList;
     }
     
-    
-    
+    public Iterable<Itineraire> getNearest(float longCentre, float latCentre, int distance, String speciality) {
+        Iterable<Itineraire> myItineraireList;
+        Iterable<Hospital> myHospitalList;
+        myHospitalList = this.getAllFreeHospitalInRangeWithSpeciality(longCentre, latCentre, distance, speciality);
+        myItineraireList = GisOperations.getItineraireOSRM(longCentre, latCentre, myHospitalList);
+        return myItineraireList;
+    }
+        
 }
