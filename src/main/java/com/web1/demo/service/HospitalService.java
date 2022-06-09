@@ -10,7 +10,9 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.web1.demo.repository.HospitalRepository;
+import com.web1.demo.repository.HospitalRepositoryCustom;
 import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -20,11 +22,27 @@ import java.util.Optional;
  */
 @Data
 @Service
-public class HospitalService {
+public class HospitalService implements HospitalRepositoryCustom{
 
     @Autowired
     private HospitalRepository hospitalRepository;
 
+    @Override
+    public List<Hospital> findByFreebed() {
+        return hospitalRepository.findByFreebed();
+    }  
+    
+    @Override
+    public List<Hospital> findBySpecialities(String spec) {
+        return hospitalRepository.findBySpecialities(spec);
+    }
+    
+    
+    @Override
+    public List<Hospital> findByFreebedAndBySpecialities(String spec) {
+        return hospitalRepository.findByFreebedAndBySpecialities(spec);
+    }
+    
     public Optional<Hospital> getHospital(final Integer id) {
         return hospitalRepository.findById(id);
     }
@@ -46,7 +64,7 @@ public class HospitalService {
         return savedHospital;
     }
 
-    public Iterable<Hospital> getAllFreeHospital() {
+   /* public Iterable<Hospital> getAllFreeHospital() {
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
         //déporter le prétraitement sur le repository 
         for (Hospital hopital : hospitalRepository.findAll()) {
@@ -67,11 +85,11 @@ public class HospitalService {
             }
         }
         return myHospitalList;
-    }
+    }*/
     
     public Iterable<Hospital> getAllHospitalInRange(float longCentre, float latCentre, int distance){
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
-        for (Hospital hopital : getAllFreeHospital()) {
+        for (Hospital hopital : findByFreebed()) {
             if (GisOperations.distFrom(longCentre, latCentre, hopital.getLongitude(), hopital.getLatitude()) < distance) {
                 myHospitalList.add(hopital);
             }
@@ -79,14 +97,12 @@ public class HospitalService {
         return myHospitalList;
     }
     
-    //useless? Ou du moins c'est le bordel. A envoyer vers la classe gisOperation 
+    
     public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(float longCentre, float latCentre, int distance, String speciality){
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
         ArrayList<Hospital> myHospitalFreeList = new ArrayList<>();
-        for (Hospital hopital : getAllBySpec(speciality)) {
-            if (hopital.getFreebed() > 0) {
-                myHospitalFreeList.add(hopital);
-            }
+        for (Hospital hopital : findByFreebedAndBySpecialities(speciality)) {
+            myHospitalFreeList.add(hopital);
         }
         for (Hospital hopital : myHospitalFreeList){
             if (GisOperations.distFrom(longCentre, latCentre, hopital.getLatitude(), hopital.getLongitude()) < distance) {
@@ -103,5 +119,6 @@ public class HospitalService {
         myItineraireList = GisOperations.getItineraireOSRM(longCentre, latCentre, myHospitalList);
         return myItineraireList;
     }
-        
+
+    
 }

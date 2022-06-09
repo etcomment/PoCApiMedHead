@@ -70,10 +70,19 @@ public class HospitalController {
      * @return - An Iterable object of all Hospital with free beds,  full filled
      * @throws com.web1.demo.exeptions.NoHospitalFound
      */
-    @GetMapping("/hospital/free")
+    /*@GetMapping("/hospital/free")
     public Iterable<Hospital> getAllFreeHospital()  throws NoHospitalFound{
         if (hospitalService.getAllFreeHospital()!=null){
             return hospitalService.getAllFreeHospital();
+        }else {
+            throw new NoHospitalFound("No hospital found in database");
+        }
+    }*/
+    
+    @GetMapping("/hospital/free")
+    public Iterable<Hospital> getAllFreebedHospital()  throws NoHospitalFound{
+        if (hospitalService.findByFreebed()!=null){
+            return hospitalService.findByFreebed();
         }else {
             throw new NoHospitalFound("No hospital found in database");
         }
@@ -114,7 +123,7 @@ public class HospitalController {
      * @return - An object of Hospital full filled with given speciality
      * @throws com.web1.demo.exeptions.NoHospitalFound
      */
-    @GetMapping("/hospital/speciality/{spec}")
+    /*@GetMapping("/hospital/speciality/{spec}")
     public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
         ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.getAllBySpec(speciality);
         if (!myHospitalList.isEmpty()){
@@ -122,7 +131,30 @@ public class HospitalController {
         } else {
             throw new NoHospitalFound("No hospital found in database with this speciality");
         }
+    }*/
+    
+    @GetMapping("/hospital/speciality/{spec}")
+    public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
+        ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.findBySpecialities(speciality);
+        if (!myHospitalList.isEmpty()){
+            return hospitalService.findBySpecialities(speciality);
+        } else {
+            throw new NoHospitalFound("No hospital found in database with this speciality");
+        }
     }
+    
+        
+    @GetMapping("/hospital/free/speciality/{spec}")
+    public Iterable<Hospital> getAllFreeBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
+        ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.findByFreebedAndBySpecialities(speciality);
+        if (!myHospitalList.isEmpty()){
+            return hospitalService.findByFreebedAndBySpecialities(speciality);
+        } else {
+            throw new NoHospitalFound("No Free hospital found in database with this speciality");
+        }
+    }
+    
+    
     
     @GetMapping("/hospital/free/speciality/{spec}/range/{longInit}/{latInit}/{distance}")
     public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ) throws NoHospitalFound {

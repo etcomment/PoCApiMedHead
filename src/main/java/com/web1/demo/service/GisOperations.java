@@ -53,13 +53,12 @@ public class GisOperations {
         RestTemplate restTemplate = new RestTemplate();
         float distanceTrajet=0;
         float tempsTrajet=0;
+        JSONObject reponseParsed = null;
+        JSONArray reponseParsedArray = null;
         for (Hospital hopital : listHospital) {
-               //return and order
-               // On récupère la distance de l'hopital, si e
-               //LA SOLUTION EST DE FAIRE UN OBJET COMPOSE D'UN ID HOSPITAL, D'UNE DISTANCE ET D'UNE DUREE!!!
+               //get reponse from API
                ResponseEntity<String> reponse = restTemplate.getForEntity(requestUrl+hopital.getLongitude()+","+hopital.getLatitude(), String.class);
-               JSONObject reponseParsed = null;
-               JSONArray reponseParsedArray = null;
+               
             try {
                 reponseParsed = new JSONObject(reponse.getBody());
                 reponseParsedArray = reponseParsed.getJSONArray("features");
