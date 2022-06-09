@@ -1,4 +1,4 @@
-package com.web1.demo;
+package com.medhead.api;
 
 
 import org.springframework.boot.SpringApplication;
@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class DemoApplication {
+public class RunApi {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(RunApi.class, args);
 	}
 
 }

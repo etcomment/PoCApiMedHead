@@ -1,6 +1,6 @@
-package com.web1.demo.repository;
+package com.medhead.api.repository;
 
-import com.web1.demo.model.Hospital;
+import com.medhead.api.model.Hospital;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

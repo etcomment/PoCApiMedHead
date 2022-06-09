@@ -1,13 +1,13 @@
-package com.web1.demo.controller;
+package com.medhead.api.controller;
 
 
-import com.web1.demo.exeptions.NoHospitalFound;
-import com.web1.demo.exeptions.NoParametersEntered;
-import com.web1.demo.exeptions.NotYetImplemented;
-import com.web1.demo.model.Hospital;
-import com.web1.demo.model.Itineraire;
-import com.web1.demo.service.GisOperations;
-import com.web1.demo.service.HospitalService;
+import com.medhead.api.exeptions.NoHospitalFound;
+import com.medhead.api.exeptions.NoParametersEntered;
+import com.medhead.api.exeptions.NotYetImplemented;
+import com.medhead.api.model.Hospital;
+import com.medhead.api.model.Itineraire;
+import com.medhead.api.service.GisOperations;
+import com.medhead.api.service.HospitalService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,7 +44,7 @@ public class HospitalController {
     /**
      * Read - Get all hospitals
      * @return - An Iterable object of Hospital full filled
-     * @throws com.web1.demo.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound
      */
     @GetMapping("/hospital")
     public Iterable<Hospital> getHospital() throws NoHospitalFound{
@@ -58,7 +58,7 @@ public class HospitalController {
     
     /**
      * Read - Get all hospital
-     * @throws com.web1.demo.exeptions.NoParametersEntered
+     * @throws com.medhead.api.exeptions.NoParametersEntered
      */
     @RequestMapping("/hospital/speciality")
     public void noSpecEntered() throws NoParametersEntered {
@@ -68,7 +68,7 @@ public class HospitalController {
     /**
      * Read - Get all free hospitals
      * @return - An Iterable object of all Hospital with free beds,  full filled
-     * @throws com.web1.demo.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound
      */
     /*@GetMapping("/hospital/free")
     public Iterable<Hospital> getAllFreeHospital()  throws NoHospitalFound{
@@ -92,7 +92,7 @@ public class HospitalController {
      * Read - Get hospitals by Id
      * @param id
      * @return - An object of Hospital full filled with given Id
-     * @throws com.web1.demo.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound
      */
     @GetMapping("/hospital/{id}")
     public Optional<Hospital> getHospital(@PathVariable("id") final Integer id)  throws NoHospitalFound{
@@ -121,7 +121,7 @@ public class HospitalController {
      * Read - Get hospitals by Specialities
      * @param speciality
      * @return - An object of Hospital full filled with given speciality
-     * @throws com.web1.demo.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound
      */
     /*@GetMapping("/hospital/speciality/{spec}")
     public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
@@ -172,7 +172,7 @@ public class HospitalController {
      * @param longInit
      * @param distance
      * @return - An object of Hospital full filled with given speciality
-     * @throws com.web1.demo.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound
      */
     @GetMapping("/hospital/range/{longInit}/{latInit}/{distance}")
     public Iterable<Hospital> getAllHospitalInRange(@PathVariable("longInit") final float longInit, @PathVariable("latInit") final float latInit, @PathVariable("distance") final int distance ) throws NoHospitalFound{

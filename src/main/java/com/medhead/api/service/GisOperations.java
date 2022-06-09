@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.web1.demo.service;
+package com.medhead.api.service;
 
-import com.web1.demo.model.Hospital;
-import com.web1.demo.model.Itineraire;
+import com.medhead.api.model.Hospital;
+import com.medhead.api.model.Itineraire;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

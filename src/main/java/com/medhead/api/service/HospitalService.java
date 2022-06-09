@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.web1.demo.service;
+package com.medhead.api.service;
 
-import com.web1.demo.model.Hospital;
-import com.web1.demo.model.Itineraire;
+import com.medhead.api.model.Hospital;
+import com.medhead.api.model.Itineraire;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.web1.demo.repository.HospitalRepository;
-import com.web1.demo.repository.HospitalRepositoryCustom;
+import com.medhead.api.repository.HospitalRepository;
+import com.medhead.api.repository.HospitalRepositoryCustom;
 import java.util.ArrayList;
 import java.util.List;
 
