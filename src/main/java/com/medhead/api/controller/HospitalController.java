@@ -9,7 +9,6 @@ import com.medhead.api.model.Itineraire;
 import com.medhead.api.service.GisOperations;
 import com.medhead.api.service.HospitalService;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,21 +63,7 @@ public class HospitalController {
     public void noSpecEntered() throws NoParametersEntered {
         throw new NoParametersEntered("Warning, missing the speciality");
     }
-    
-    /**
-     * Read - Get all free hospitals
-     * @return - An Iterable object of all Hospital with free beds,  full filled
-     * @throws com.medhead.api.exeptions.NoHospitalFound
-     */
-    /*@GetMapping("/hospital/free")
-    public Iterable<Hospital> getAllFreeHospital()  throws NoHospitalFound{
-        if (hospitalService.getAllFreeHospital()!=null){
-            return hospitalService.getAllFreeHospital();
-        }else {
-            throw new NoHospitalFound("No hospital found in database");
-        }
-    }*/
-    
+        
     @GetMapping("/hospital/free")
     public Iterable<Hospital> getAllFreebedHospital()  throws NoHospitalFound{
         if (hospitalService.findByFreebed()!=null){
@@ -110,29 +95,13 @@ public class HospitalController {
     public Comparable<String> getHospitalName(@PathVariable("id") final Integer id){
         return hospitalService.getHospitalName(id);
     }
-
-    /*@GetMapping("/hospital/{range}")
-    public Iterable<Hospital> getHospitalInRange(@PathVariable("range") final Integer range){
-        return hospitalService.getAllHospitalInRange(range, 52.0333256, -1.2256890);
-    }*/
-    
     
     /**
      * Read - Get hospitals by Specialities
      * @param speciality
      * @return - An object of Hospital full filled with given speciality
      * @throws com.medhead.api.exeptions.NoHospitalFound
-     */
-    /*@GetMapping("/hospital/speciality/{spec}")
-    public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
-        ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.getAllBySpec(speciality);
-        if (!myHospitalList.isEmpty()){
-            return hospitalService.getAllBySpec(speciality);
-        } else {
-            throw new NoHospitalFound("No hospital found in database with this speciality");
-        }
-    }*/
-    
+     */    
     @GetMapping("/hospital/speciality/{spec}")
     public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
         ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.findBySpecialities(speciality);
@@ -204,8 +173,6 @@ public class HospitalController {
         } else {
             throw new NoHospitalFound("No hospital found in database in this range");
         }
-        
-        
     }
 
 }
