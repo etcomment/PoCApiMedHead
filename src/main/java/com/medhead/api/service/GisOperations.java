@@ -55,6 +55,7 @@ public class GisOperations {
         float tempsTrajet=0;
         JSONObject reponseParsed = null;
         JSONArray reponseParsedArray = null;
+        //voir pour multithreader
         for (Hospital hopital : listHospital) {
                //get reponse from API
                ResponseEntity<String> reponse = restTemplate.getForEntity(requestUrl+hopital.getLongitude()+","+hopital.getLatitude(), String.class);
@@ -73,12 +74,7 @@ public class GisOperations {
             } catch (Exception ex) {
                 Logger.getLogger(GisOperations.class.getName()).log(Level.SEVERE, null, ex);
             }
-               
-               //String toto = reponse.getBody();
-               //myItineraireList.add(reponse);
                System.out.println("Duree : "+tempsTrajet+" -- "+hopital.getLongitude()+","+hopital.getLatitude()+"--"+distanceTrajet+" Km");
-               
-               //myItineraireList.add(new Itineraire(hopital, latCentre, latCentre))
         }
         return myItineraireList;   
     }   

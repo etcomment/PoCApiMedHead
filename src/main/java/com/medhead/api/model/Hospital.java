@@ -33,5 +33,5 @@ public class Hospital {
     private String address;
     
     private Integer freebed;
-    
+    // @Trancient --> pour pas besoin de chamops dans la bdd
 }
