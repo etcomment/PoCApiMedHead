@@ -14,6 +14,5 @@ import com.medhead.api.model.Hospital;
  */
 @Repository
 public interface HospitalRepository extends CrudRepository<Hospital, Integer>, HospitalRepositoryCustom{
-    //todo findByFreebed
 
 }
