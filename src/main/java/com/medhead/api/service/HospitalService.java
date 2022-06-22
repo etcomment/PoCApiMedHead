@@ -63,29 +63,6 @@ public class HospitalService implements HospitalRepositoryCustom{
         Hospital savedHospital = hospitalRepository.save(hopital);
         return savedHospital;
     }
-
-   /* public Iterable<Hospital> getAllFreeHospital() {
-        ArrayList<Hospital> myHospitalList = new ArrayList<>();
-        //déporter le prétraitement sur le repository 
-        for (Hospital hopital : hospitalRepository.findAll()) {
-            if (hopital.getFreebed() > 0) {
-                myHospitalList.add(hopital);
-            }
-        }
-        return myHospitalList;
-    }
-    
-    
-    public Iterable<Hospital> getAllBySpec(String speciality){
-        ArrayList<Hospital> myHospitalList = new ArrayList<>();
-        //déporter le prétraitement sur le repository 
-        for (Hospital hopital : hospitalRepository.findAll()) {
-            if (hopital.getSpecialities().toLowerCase().contains(speciality)) {
-                myHospitalList.add(hopital);
-            }
-        }
-        return myHospitalList;
-    }*/
     
     public Iterable<Hospital> getAllHospitalInRange(float longCentre, float latCentre, int distance){
         ArrayList<Hospital> myHospitalList = new ArrayList<>();

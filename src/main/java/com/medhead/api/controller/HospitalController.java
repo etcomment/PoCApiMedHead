@@ -30,11 +30,18 @@ public class HospitalController {
     @Autowired
     private GisOperations gisOperation;
 
+    /**
+     *
+     */
     @RequestMapping("/")
     public void handleRequest() {
         throw new RuntimeException("Exeption racine");
     }
     
+    /**
+     *
+     * @throws NotYetImplemented
+     */
     @RequestMapping("/app-info")
     public void handleAppInfoRequest() throws NotYetImplemented {
         throw new NotYetImplemented("La requete n'est pas encore implementée");
@@ -64,6 +71,11 @@ public class HospitalController {
         throw new NoParametersEntered("Warning, missing the speciality");
     }
         
+    /**
+     *
+     * @return
+     * @throws NoHospitalFound
+     */
     @GetMapping("/hospital/free")
     public Iterable<Hospital> getAllFreebedHospital()  throws NoHospitalFound{
         if (hospitalService.findByFreebed()!=null){
@@ -90,12 +102,7 @@ public class HospitalController {
         }
     }
     
-    //useless!
-    @GetMapping("/hospital/name/{id}")
-    public Comparable<String> getHospitalName(@PathVariable("id") final Integer id){
-        return hospitalService.getHospitalName(id);
-    }
-    
+ 
     /**
      * Read - Get hospitals by Specialities
      * @param speciality
@@ -112,7 +119,12 @@ public class HospitalController {
         }
     }
     
-        
+    /**
+     *
+     * @param speciality
+     * @return
+     * @throws NoHospitalFound
+     */
     @GetMapping("/hospital/free/speciality/{spec}")
     public Iterable<Hospital> getAllFreeBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
         ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.findByFreebedAndBySpecialities(speciality);
@@ -123,8 +135,15 @@ public class HospitalController {
         }
     }
     
-    
-    
+    /**
+     *
+     * @param speciality
+     * @param latInit
+     * @param longInit
+     * @param distance
+     * @return
+     * @throws NoHospitalFound
+     */
     @GetMapping("/hospital/free/speciality/{spec}/range/{longInit}/{latInit}/{distance}")
     public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ) throws NoHospitalFound {
         ArrayList<Hospital> myHospitalList = (ArrayList<Hospital>) hospitalService.getAllFreeHospitalInRangeWithSpeciality(latInit, longInit, distance, speciality);

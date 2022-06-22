@@ -17,7 +17,7 @@ public class Itineraire {
     private final Hospital hopitalDestination;
     private final float distanceGoal;
     private final float durationDrive;
-    //add more attr if necessary
+    //add more attr if necessary --> Ajouter origine
     
     public Itineraire(Hospital hopital, float distance, float duree){
         this.hopitalDestination = hopital;
