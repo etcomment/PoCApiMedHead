@@ -71,7 +71,7 @@ jobs:
         with:
           name: pocApiMedHead-0.0.1-SNAPSHOT.war
       - name: get env dir
-        run: pwd && ls -ltr target/
+        run: pwd && ls -ltr
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
