@@ -10,6 +10,7 @@
 	</parent>
 	<groupId>com.medhead</groupId>
 	<artifactId>pocApiMedHead</artifactId>
+	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pocApiMedHead</name>
 	<description>POC Api Medhead</description>
