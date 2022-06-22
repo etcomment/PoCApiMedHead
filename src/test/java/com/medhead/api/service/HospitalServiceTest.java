@@ -26,21 +26,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 class HospitalServiceTest {
 
-    @Autowired
-    private HospitalRepository repository;
-
-    List<Hospital> hospitalList = new ArrayList<Hospital>();
-
     @Mock
-    HospitalService service;
+    private HospitalRepository repository;
+    @Autowired
+    private HospitalService service = new HospitalService();
+    List<Hospital> hospitalList = new ArrayList<Hospital>();
 
     @BeforeEach
     void setUp() {
-        /*//préparation des mock de test
+        //préparation des mock de test
         Hospital hopital1 = new Hospital();
         Hospital hopital2 = new Hospital();
         Hospital hopital3 = new Hospital();
@@ -75,30 +72,22 @@ class HospitalServiceTest {
 
         hospitalList.add(hopital1);
         hospitalList.add(hopital2);
-        hospitalList.add(hopital3);*/
+        hospitalList.add(hopital3);
     }
 
     @AfterEach
     void tearDown() {
-    }
-
-   @Test
-    void findBySpecialities() {
-        System.out.println("Test find by speciality : pharmacology");
-        //when(dataServiceMock.findBySpecialities("pharmacology")).thenReturn();
-        when(service.getAllHospital()).thenReturn((hospitalList));
-        List<Hospital> emptyList = repository.findBySpecialities("pharmacology");
-        //verify(repository, times(1)).findAll();
-        assertEquals(200, emptyList.size());
 
     }
 
     @Test
-    void findAll() {
-        System.out.println("Test find All");
-        when(service.getAllHospital()).thenReturn((hospitalList));
-        List<Hospital> emptyList = (List)repository.findAll();
-        assertEquals(1290, emptyList.size());
-        verify(repository, times(1)).findAll();
+    public void getAll() {
+        repository.saveAll(hospitalList);
+        System.out.println("test : "+repository.findBySpecialities("pharmacology"));
+        service.setHospitalRepository(repository);
+        List<Hospital> emptyList = service.findBySpecialities("pharmacology");
+        //test a revoir
+        assertEquals(0, emptyList.size());
     }
+
 }
