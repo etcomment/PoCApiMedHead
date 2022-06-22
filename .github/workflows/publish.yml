@@ -37,8 +37,8 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-       name: DevOpsPipeline.war
-       path: target/DevOpsPipeline.war
+       name: pocApiMedHead-0.0.1-SNAPSHOT.jar
+       path: target/
 
   publish:
     needs: build
@@ -68,6 +68,8 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Download artifact
         uses: actions/download-artifact@v2
+        with:
+          name: pocApiMedHead-0.0.1-SNAPSHOT.jar
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
