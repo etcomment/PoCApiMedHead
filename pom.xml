@@ -86,5 +86,12 @@
 		</plugins>
 	</build>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/etcomment/ms1</url>
+		</repository>
+	</distributionManagement>
+
 
 </project>
