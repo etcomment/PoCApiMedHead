@@ -47,7 +47,6 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Publish package
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode -DskipTests -DuseGitHubPackages=true deploy
         env:
-          MAVEN_USERNAME: 'stiven.guillaume@gmail.com'
-          MAVEN_PASSWORD: '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'
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
