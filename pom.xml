@@ -99,7 +99,8 @@
 				<repository>
 					<id>github</id>
 					<name>GitHub Packages</name>
-					<url>https://maven.pkg.github.com/etcomment/ms1</url>
+					<url>https://maven.pkg.github.com/etcomment/ms1/</url>
+					<uniqueVersion>true</uniqueVersion>
 				</repository>
 			</distributionManagement>
 		</profile>
