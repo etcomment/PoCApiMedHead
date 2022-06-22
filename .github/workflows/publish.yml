@@ -16,9 +16,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    defaults:
-      run:
-        working-directory: ./target
 
     steps:
     - uses: actions/checkout@v3
@@ -36,7 +33,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: get env dir
-      run: pwd && ls -ltr
+      run: pwd && ls -ltr #/home/runner/work/ms1/ms1/
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
