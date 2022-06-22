@@ -35,9 +35,10 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: get env dir
+      run: pwd && ls -ltr
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
-      run: pwd && ls -ltr
       with:
        name: DevOpsPipeline.war
        path: target/DevOpsPipeline.war
