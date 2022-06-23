@@ -9,12 +9,12 @@ import org.springframework.stereotype.Repository;
 public interface HospitalRepositoryCustom {
 
     @Query(value = "SELECT h FROM Hospital h WHERE Freebed > 0")
-    public List<Hospital> findByFreebed();
+    List<Hospital> findByFreebed();
     
     @Query(value = "SELECT h FROM Hospital h WHERE Spec LIKE %?1%")
-    public List<Hospital> findBySpecialities(String spec);
+    List<Hospital> findBySpecialities(String spec);
     
     @Query(value = "SELECT h FROM Hospital h WHERE Spec LIKE %?1% AND Freebed > 0")
-    public List<Hospital> findByFreebedAndBySpecialities(String spec);
+    List<Hospital> findByFreebedAndBySpecialities(String spec);
     
 }

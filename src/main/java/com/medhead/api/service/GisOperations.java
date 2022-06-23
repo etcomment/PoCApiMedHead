@@ -6,15 +6,19 @@ package com.medhead.api.service;
 
 import com.medhead.api.model.Hospital;
 import com.medhead.api.model.Itineraire;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.JSONObject;
 import org.json.JSONArray;
-
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  *
@@ -22,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class GisOperations {
-    
+
     public static double distFrom(double longAmbulance, double latAmbulance, double longHopital, double latHopital) {
         double earthRadius = 6371.0; // 3958.75 miles (ou 6371.0 kilometers)
         double dLat = Math.toRadians(latHopital-latAmbulance);
@@ -32,51 +36,56 @@ public class GisOperations {
         double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
                 * Math.cos(Math.toRadians(latAmbulance)) * Math.cos(Math.toRadians(latHopital));
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double dist = earthRadius * c;
-        return dist;
+        return earthRadius * c;
     }
     
     /**
      *
-     * @param latCentre
-     * @param longCentre
-     * @param listHospital
-     * @return
+     * @param latCentre - Origin's Latitude (ex : 51.525756)
+     * @param longCentre - Origin's Longitude (ex : -0.712585)
+     * @param listHospital - List of all hospital selected in method distFrom
+     * @return - Return a new ordinate list of hospital
      */
     public static Iterable<Itineraire> getItineraireOSRM(float longCentre, float latCentre, Iterable<Hospital> listHospital) {
-        ArrayList<Itineraire> myItineraireList = new ArrayList<>();
-        
-        String apiKey = "5b3ce3597851110001cf6248dc9db6fb880d46b7b63a907d42d826e5";
+
         String apiUrl = "https://api.openrouteservice.org/v2/directions/driving-car?api_key=";
+        String apiKey ="5b3ce3597851110001cf6248dc9db6fb880d46b7b63a907d42d826e5" ;
+        ArrayList<Itineraire> myItineraireList = new ArrayList<>();
         String origin = latCentre+","+longCentre;
         String requestUrl = apiUrl+apiKey+"&start="+origin+"&end=";
+
         RestTemplate restTemplate = new RestTemplate();
-        float distanceTrajet=0;
-        float tempsTrajet=0;
-        JSONObject reponseParsed = null;
-        JSONArray reponseParsedArray = null;
-        //voir pour multithreader
-        for (Hospital hopital : listHospital) {
-               //get reponse from API
-               ResponseEntity<String> reponse = restTemplate.getForEntity(requestUrl+hopital.getLongitude()+","+hopital.getLatitude(), String.class);
-               
+        final float[] distanceTrajet = {0};
+        final float[] tempsTrajet = {0};
+        final JSONObject[] reponseParsed = {null};
+        final JSONArray[] reponseParsedArray = {null};
+
+        Stream<Hospital> streamedList = StreamSupport.stream(listHospital.spliterator(),true);
+        Instant start = Instant.now();
+        streamedList.parallel().forEach(hopital -> {
             try {
-                reponseParsed = new JSONObject(reponse.getBody());
-                reponseParsedArray = reponseParsed.getJSONArray("features");
-                reponseParsed = reponseParsedArray.getJSONObject(0);
-                reponseParsed = reponseParsed.getJSONObject("properties");
-                reponseParsed = reponseParsed.getJSONObject("summary");
-                distanceTrajet = (float)reponseParsed.getFloat("distance")/1000;
-                tempsTrajet = (float)reponseParsed.getFloat("duration");
-                
-                myItineraireList.add(new Itineraire(hopital, distanceTrajet, tempsTrajet));
+                ResponseEntity<String> reponse = restTemplate.getForEntity(requestUrl+hopital.getLongitude()+","+hopital.getLatitude(), String.class);
+                reponseParsed[0] = new JSONObject(reponse.getBody());
+                reponseParsedArray[0] = reponseParsed[0].getJSONArray("features");
+                reponseParsed[0] = reponseParsedArray[0].getJSONObject(0);
+                reponseParsed[0] = reponseParsed[0].getJSONObject("properties");
+                reponseParsed[0] = reponseParsed[0].getJSONObject("summary");
+                distanceTrajet[0] = reponseParsed[0].getFloat("distance")/1000;
+                tempsTrajet[0] = reponseParsed[0].getFloat("duration");
+
+                myItineraireList.add(new Itineraire(hopital, distanceTrajet[0], tempsTrajet[0]));
                 //System.out.println(toto);
             } catch (Exception ex) {
                 Logger.getLogger(GisOperations.class.getName()).log(Level.SEVERE, null, ex);
             }
-               System.out.println("Duree : "+tempsTrajet+" -- "+hopital.getLongitude()+","+hopital.getLatitude()+"--"+distanceTrajet+" Km");
-        }
+            System.out.println("Duree : "+ tempsTrajet[0] +" -- "+hopital.getLongitude()+","+hopital.getLatitude()+"--"+ distanceTrajet[0] +" Km");
+        });
+
+        Instant finish = Instant.now();
+        System.out.println("Duree de la methode : "+ Duration.between(start, finish).toMillis());
         return myItineraireList;   
-    }   
+    }
+
 }
+
 

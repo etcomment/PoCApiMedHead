@@ -51,17 +51,12 @@ public class HospitalService implements HospitalRepositoryCustom{
         return hospitalRepository.findAll();
     }
 
-    public String getHospitalName(final Integer id) {
-        return hospitalRepository.findById(id).get().getName();
-    }
-
     public void deleteHospital(final Integer id) {
         hospitalRepository.deleteById(id);
     }
 
     public Hospital saveHospital(Hospital hopital) {
-        Hospital savedHospital = hospitalRepository.save(hopital);
-        return savedHospital;
+        return hospitalRepository.save(hopital);
     }
     
     public Iterable<Hospital> getAllHospitalInRange(float longCentre, float latCentre, int distance){
@@ -77,10 +72,7 @@ public class HospitalService implements HospitalRepositoryCustom{
     
     public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(float longCentre, float latCentre, int distance, String speciality){
         ArrayList<Hospital> myHospitalList = new ArrayList<>();
-        ArrayList<Hospital> myHospitalFreeList = new ArrayList<>();
-        for (Hospital hopital : findByFreebedAndBySpecialities(speciality)) {
-            myHospitalFreeList.add(hopital);
-        }
+        ArrayList<Hospital> myHospitalFreeList = new ArrayList<>(findByFreebedAndBySpecialities(speciality));
         for (Hospital hopital : myHospitalFreeList){
             if (GisOperations.distFrom(longCentre, latCentre, hopital.getLatitude(), hopital.getLongitude()) < distance) {
                 myHospitalList.add(hopital);

@@ -40,7 +40,7 @@ public class HospitalController {
     
     /**
      *
-     * @throws NotYetImplemented
+     * @throws NotYetImplemented - generic error for no implementation
      */
     @RequestMapping("/app-info")
     public void handleAppInfoRequest() throws NotYetImplemented {
@@ -50,7 +50,7 @@ public class HospitalController {
     /**
      * Read - Get all hospitals
      * @return - An Iterable object of Hospital full filled
-     * @throws com.medhead.api.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound - Generic error for no hospital
      */
     @GetMapping("/hospital")
     public Iterable<Hospital> getHospital() throws NoHospitalFound{
@@ -64,7 +64,7 @@ public class HospitalController {
     
     /**
      * Read - Get all hospital
-     * @throws com.medhead.api.exeptions.NoParametersEntered
+     * @throws com.medhead.api.exeptions.NoParametersEntered  - Generic error for no parameters entered
      */
     @RequestMapping("/hospital/speciality")
     public void noSpecEntered() throws NoParametersEntered {
@@ -73,8 +73,8 @@ public class HospitalController {
         
     /**
      *
-     * @return
-     * @throws NoHospitalFound
+     * @return - Iterable of all free hospital
+     * @throws NoHospitalFound  - Generic error for no hospital
      */
     @GetMapping("/hospital/free")
     public Iterable<Hospital> getAllFreebedHospital()  throws NoHospitalFound{
@@ -87,27 +87,26 @@ public class HospitalController {
 
     /**
      * Read - Get hospitals by Id
-     * @param id
+     * @param id - Integer of hospital's ID
      * @return - An object of Hospital full filled with given Id
-     * @throws com.medhead.api.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound -  - Generic error for no hospital
      */
     @GetMapping("/hospital/{id}")
     public Optional<Hospital> getHospital(@PathVariable("id") final Integer id)  throws NoHospitalFound{
         Optional<Hospital> hospital = hospitalService.getHospital(id);
         if (hospital.isPresent()){
-            return Optional.of(hospital.get());
+            return hospital;
         }
         else {
             throw new NoHospitalFound("No hospital found in database with ID "+id);
         }
     }
-    
- 
+
     /**
      * Read - Get hospitals by Specialities
-     * @param speciality
+     * @param speciality - String of the speciality's name
      * @return - An object of Hospital full filled with given speciality
-     * @throws com.medhead.api.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound -  - Generic error for no hospital
      */    
     @GetMapping("/hospital/speciality/{spec}")
     public Iterable<Hospital> getAllBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
@@ -121,9 +120,9 @@ public class HospitalController {
     
     /**
      *
-     * @param speciality
-     * @return
-     * @throws NoHospitalFound
+     * @param speciality - String of speciality's name
+     * @return - An Iterable of hospital list with freebed in the speciality given
+     * @throws NoHospitalFound - Generic error for no hospital
      */
     @GetMapping("/hospital/free/speciality/{spec}")
     public Iterable<Hospital> getAllFreeBySpec(@PathVariable("spec") final String speciality) throws NoHospitalFound{
@@ -137,12 +136,12 @@ public class HospitalController {
     
     /**
      *
-     * @param speciality
-     * @param latInit
-     * @param longInit
-     * @param distance
-     * @return
-     * @throws NoHospitalFound
+     * @param speciality - String of speciality's name
+     * @param latInit - Latitude (ex : 51.525756)
+     * @param longInit - Longitude (ex : -0.712585)
+     * @param distance - Range for searching hospital
+     * @return - Iterable of hospital with free bed and speciality in a range with origin long/lat
+     * @throws NoHospitalFound - Generic error for no hospital
      */
     @GetMapping("/hospital/free/speciality/{spec}/range/{longInit}/{latInit}/{distance}")
     public Iterable<Hospital> getAllFreeHospitalInRangeWithSpeciality(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ) throws NoHospitalFound {
@@ -156,11 +155,11 @@ public class HospitalController {
     
      /**
      * Read - Get hospitals by range
-     * @param latInit
-     * @param longInit
-     * @param distance
+     * @param latInit - Latitude (ex : 51.525756)
+     * @param longInit - Longitude (ex : -0.712585)
+     * @param distance - Range for searching hospital
      * @return - An object of Hospital full filled with given speciality
-     * @throws com.medhead.api.exeptions.NoHospitalFound
+     * @throws com.medhead.api.exeptions.NoHospitalFound - Generic error for no hospital
      */
     @GetMapping("/hospital/range/{longInit}/{latInit}/{distance}")
     public Iterable<Hospital> getAllHospitalInRange(@PathVariable("longInit") final float longInit, @PathVariable("latInit") final float latInit, @PathVariable("distance") final int distance ) throws NoHospitalFound{
@@ -175,12 +174,12 @@ public class HospitalController {
 
     /**
      *
-     * @param speciality
-     * @param latInit
-     * @param longInit
-     * @param distance
-     * @return
-     * @throws NoHospitalFound
+     * @param speciality - String of speciality's name
+     * @param latInit - Latitude (ex : 51.525756)
+     * @param longInit - Longitude (ex : -0.712585)
+     * @param distance - Range for searching hospital
+     * @return - An object of Hospital full filled with given speciality, in a range, ordered and with use of external API for real distance
+     * @throws NoHospitalFound - Generic error for no hospital
      */
     @GetMapping("/nearest/{longInit}/{latInit}/{distance}/{spec}")
     public Iterable<Itineraire> getNearest(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ){
