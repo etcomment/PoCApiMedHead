@@ -109,6 +109,13 @@ public class HospitalControllerIT {
         mock.perform(get("/hospital/400258"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void failAtNotFoundHospitalInRange() throws Exception{
+        mock.perform(get("/nearest/-1.8/51.25/2/pharmacology"))
+                .andExpect(status().isNotFound());
+    }
+
     
     /**
      * Test of getAllHospitalInRange method, of class HospitalController.

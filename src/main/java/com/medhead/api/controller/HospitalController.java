@@ -189,7 +189,7 @@ public class HospitalController {
             Collections.sort(hospitalNearest, Itineraire.sortByDistance);
             return hospitalNearest;
         } else {
-            throw new NoHospitalFound("No hospital found in database in this range");
+            throw new NoHospitalFound("No hospital found in database with this speciality at this range");
         }
     }
 
