@@ -151,6 +151,7 @@ public class HospitalControllerIT {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+        // TODO Nearest : VOir ce qui se passe en cas de panne reseau
     }*/
     
 }

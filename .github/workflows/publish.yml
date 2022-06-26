@@ -36,7 +36,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-       name: pocApiMedHead-0.0.1-SNAPSHOT-v${{github.run_number}}.war
+       name: pocApiMedHead-0.0.1-SNAPSHOT-v${{github.run_number}}.jar
        path: target/
 
   publish:
@@ -68,7 +68,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: pocApiMedHead-0.0.1-SNAPSHOT-v${{github.run_number}}.war
+          name: pocApiMedHead-0.0.1-SNAPSHOT-v${{github.run_number}}.jar
       - name: get env dir
         run: pwd && ls -ltr
       - name: Build and push

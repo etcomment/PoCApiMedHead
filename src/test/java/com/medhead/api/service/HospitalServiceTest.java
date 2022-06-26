@@ -1,38 +1,32 @@
 package com.medhead.api.service;
 
-import com.medhead.api.controller.HospitalController;
 import com.medhead.api.model.Hospital;
 import com.medhead.api.repository.HospitalRepository;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class HospitalServiceTest {
 
     @Mock
     private HospitalRepository repository;
-    @Autowired
-    private HospitalService service = new HospitalService();
+    @InjectMocks
+    private HospitalService service;
     List<Hospital> hospitalList = new ArrayList<Hospital>();
 
     @BeforeEach
@@ -73,6 +67,9 @@ class HospitalServiceTest {
         hospitalList.add(hopital1);
         hospitalList.add(hopital2);
         hospitalList.add(hopital3);
+        System.out.println("Enter beforeEach");
+
+
     }
 
     @AfterEach
@@ -82,12 +79,14 @@ class HospitalServiceTest {
 
     @Test
     public void getAll() {
-        repository.saveAll(hospitalList);
-        System.out.println("test : "+repository.findBySpecialities("pharmacology"));
-        service.setHospitalRepository(repository);
-        List<Hospital> emptyList = service.findBySpecialities("pharmacology");
+        //je créé le mock et sa réponse
+        when(repository.findAll()).thenReturn(hospitalList);
+        //when(repository.findBySpecialities("")).thenReturn(hospitalList);
+        //List<Hospital> emptyList = service.findBySpecialities("pharmacology");
+        List<Hospital> emptyList = (List)service.getAllHospital();
         //test a revoir
-        assertEquals(0, emptyList.size());
+
+        assertEquals(3, emptyList.size());
     }
 
 }
