@@ -34,14 +34,12 @@ class HospitalRepositoryCustomTest {
     @Tag("Repository")
     @Test
     void findByFreebed() {
-
         List<Hospital> testList = repository.findByFreebed();
         assertEquals(testList.size(), 859);
     }
 
     @Test
     void findBySpecialities() {
-
         List<Hospital> testList = repository.findBySpecialities("pharmacology");
         assertEquals(testList.size(), 200);
     }
