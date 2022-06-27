@@ -1,5 +1,4 @@
 package com.medhead.api;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import java.util.function.Predicate;
 import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -29,7 +29,7 @@ public class SwaggerConfig {
     @Bean
     public Docket configApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).pathMapping("/").select()
-                .paths(regex("/api.*")).build();
+                .paths(regex("/.*")).build();
     }
 
 
