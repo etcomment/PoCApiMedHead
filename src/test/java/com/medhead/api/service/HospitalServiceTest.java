@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,42 +84,30 @@ class HospitalServiceTest {
 
     @Test
     public void getAllHospital() {
-        //je créé le mock et sa réponse
         when(repository.findAll()).thenReturn(hospitalList);
-        //when(repository.findBySpecialities("")).thenReturn(hospitalList);
-        //List<Hospital> emptyList = service.findBySpecialities("pharmacology");
         List<Hospital> emptyList = (List)service.getAllHospital();
-        //test a revoir
         assertEquals(3, emptyList.size());
     }
 
     @Test
     public void getHospital() {
-        //je créé le mock et sa réponse
         when(repository.findById(1)).thenReturn(Optional.ofNullable((Hospital) hospitalList.get(1)));
-        //when(repository.findBySpecialities("")).thenReturn(hospitalList);
         Optional<Hospital> testedHospital = service.getHospital(1);
-        //test a revoir
         assertEquals("Princess Grace Hospital", testedHospital.get().getName());
     }
 
     @Test
     public void findByFreebed() {
-        //je créé le mock et sa réponse
-        when(repository.findByFreebed()).thenReturn(hospitalList);
-        //when(repository.findBySpecialities("")).thenReturn(hospitalList);
+        hospitalList.remove(1);
+        when(repository.findByFreebed()).thenReturn(new ArrayList<Hospital>(hospitalList));
         List<Hospital> emptyList = (List)service.findByFreebed();
-        //test a revoir
-        assertEquals(3, emptyList.size());
+        assertEquals(2, emptyList.size());
     }
 
     @Test
     public void getAllHospitalInRange() {
-        //je créé le mock et sa réponse
-        //when(gisMock.distFrom(-1.80,52,-1.80,51)).thenReturn(37.0);
         when(repository.findByFreebed()).thenReturn(hospitalList);
         List<Hospital> emptyList = (List)service.getAllHospitalInRange((float) -1.80, (float) 52.00,50);
-        //test a revoir
         assertEquals(1, emptyList.size());
     }
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author stiven
  */
 @RestController
+@RequestMapping("/api")
 public class HospitalController {
     @Autowired
     private HospitalService hospitalService;
