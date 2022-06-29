@@ -1,6 +1,8 @@
 package com.medhead.api.controller;
 
 
+import com.google.common.collect.Lists;
+import com.medhead.api.exeptions.NoApiCommunication;
 import com.medhead.api.exeptions.NoHospitalFound;
 import com.medhead.api.exeptions.NoParametersEntered;
 import com.medhead.api.exeptions.NotYetImplemented;
@@ -184,12 +186,14 @@ public class HospitalController {
     @GetMapping("/nearest/{longInit}/{latInit}/{distance}/{spec}")
     public Iterable<Itineraire> getNearest(@PathVariable("spec") final String speciality, @PathVariable("latInit") final float latInit, @PathVariable("longInit") final float longInit, @PathVariable("distance") final int distance ){
         ArrayList<Itineraire> hospitalNearest = (ArrayList<Itineraire>) hospitalService.getNearest(latInit, longInit, distance, speciality);
-        
+
         if (!hospitalNearest.isEmpty()){
             Collections.sort(hospitalNearest, Itineraire.sortByDistance);
             return hospitalNearest;
-        } else {
+        } else if (Lists.newArrayList(getAllFreeHospitalInRangeWithSpeciality(speciality, latInit, longInit, distance)).isEmpty()){
             throw new NoHospitalFound("No hospital found in database with this speciality at this range");
+        } else {
+            throw new NoApiCommunication("Communication error with API. Switching to hospital/free/speciality/{spec}/range/{longInit}/{latInit}/{distance}");
         }
     }
 
