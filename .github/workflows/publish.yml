@@ -10,7 +10,7 @@ on:
 
 
 jobs:
-  build:
+  testing:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -26,19 +26,32 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         ##settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-    - name: Tests with Maven
+    - name: Unit Tests with Maven
       run: mvn test
+    - name: Integration Tests with Maven
+      run: mvn failsafe:integration-test
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: get env dir
-      run: pwd && ls -ltr target/ #/home/runner/work/ms1/ms1/
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-       name: pocApiMedHead-0.0.1-SNAPSHOT-v${{github.run_number}}.jar
-       path: target/
+  build:
+    needs: testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          server-id: github
 
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: get env dir
+        run: pwd && ls -ltr target/ #/home/runner/work/ms1/ms1/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: pocApiMedHead-0.0.1-SNAPSHOT-v${{github.run_number}}.jar
+          path: target/
   publish:
     needs: build
     runs-on: ubuntu-latest

@@ -74,7 +74,6 @@ public class GisOperations {
                 tempsTrajet[0] = reponseParsed[0].getFloat("duration");
 
                 myItineraireList.add(new Itineraire(hopital, distanceTrajet[0], tempsTrajet[0]));
-                //System.out.println(toto);
             } catch (Exception ex) {
                 Logger.getLogger(GisOperations.class.getName()).log(Level.SEVERE, null, ex);
             }
