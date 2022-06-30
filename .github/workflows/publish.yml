@@ -28,8 +28,16 @@ jobs:
 
     - name: Unit Tests with Maven
       run: mvn test
+      uses: actions/upload-artifact@v3
+      with:
+        name: com.medhead.api.repository.HospitalRepositoryCustomTest.txt com.medhead.api.service.HospitalServiceTest.txt
+        path: target/surefire-reports
     - name: Integration Tests with Maven
       run: mvn failsafe:integration-test
+      uses: actions/upload-artifact@v3
+      with:
+        name: failsafe-summary.xml
+        path: target/failsafe-reports
 
   build:
     needs: testing
